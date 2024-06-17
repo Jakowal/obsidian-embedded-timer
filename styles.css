@@ -1,8 +1,42 @@
-/*
+.embedded-timer-wrapper {
+    .timer-container {
+        width: fit-content;
+        height: fit-content;
+        border-radius: 4px;
 
-This CSS file will be included with your plugin, and
-available in the app when your plugin is enabled.
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 8px;
 
-If your plugin does not need CSS, delete this file.
 
-*/
+        background: var(--background-secondary);
+
+        .timer-btn {
+            box-shadow: none;
+            background-color: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
+            --icon-size: var(--icon-size-xs);
+            color: var(--background-primary);
+
+            :hover {
+                background-color: var(--background-modifier-hover);
+            }
+
+            &.play-pause-btn {
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+                border-right: solid 0.5px var(--background-secondary);
+            }
+            &.reset-btn {
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+                border-left: solid 0.5px var(--background-secondary);
+            }
+        }
+    
+        .time {
+            font-weight: 600;
+        }
+    }
+}
