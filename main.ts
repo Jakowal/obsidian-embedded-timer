@@ -3,6 +3,8 @@ import { DEFAULT_SETTINGS, TimerSettingTab, TimerSettings } from 'src/components
 import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
 import { SetupTimerModal } from 'src/components/SetupTimerModal';
 import { TimerModel } from 'src/models/timer.model';
+import { embeddedTimerElement } from 'src/components/EmbeddedTimerElement';
+import { createTimerObject } from 'src/utils/timer.utils';
 
 export default class Timer extends Plugin {
 	settings: TimerSettings;
@@ -56,7 +58,8 @@ export default class Timer extends Plugin {
 		this.registerInterval(window.setInterval(() => console.log('setInterval'), 5 * 60 * 1000));
 
 		this.registerMarkdownCodeBlockProcessor("timer", (source, el) => {
-			const lines = source.split("\n");
+			const timer = createTimerObject(source.split("\n"), this);
+			embeddedTimerElement(el, this, timer);
 		})
 	}
 

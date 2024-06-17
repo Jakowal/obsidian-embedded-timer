@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-embedded-timer-plugin",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"description": "This is a plugin for embedded timers in Obsidian (https://obsidian.md)",
 	"main": "main.js",
 	"scripts": {

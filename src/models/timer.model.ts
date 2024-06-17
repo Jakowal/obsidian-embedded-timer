@@ -1,7 +1,6 @@
 export interface TimerModel {
-    length: string;
-    startedAt: Date;
-    format?: string;
-    fromNote: string;
-    id: string;
+    timeString: string;
+    formatString: string;
+    secondsLeft: number;
+    lastUpdated?: Date;
 }
