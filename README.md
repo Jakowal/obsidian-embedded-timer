@@ -26,4 +26,4 @@ The timers use default variables for most of the styling and should be compatibl
 - Currently, there is no sound notification when a timer completes.
 
 ## License
-The plugin is licensed under the [MIT License](https://mit-license.org/).
+The plugin is licensed under the [MIT License](https://github.com/Jakowal/obsidian-embedded-timer/blob/master/LICENSE)
