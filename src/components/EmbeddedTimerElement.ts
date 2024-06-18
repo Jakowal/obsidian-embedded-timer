@@ -1,7 +1,7 @@
 import Timer from 'main';
 import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting, setIcon } from 'obsidian';
 import { TimerModel } from 'src/models/timer.model';
-import { getTimerString, timerIsFinished, updateSecondsLeftForTimer } from 'src/utils/timer.utils';
+import { getSecondsForTimer, getTimerString, timerIsFinished, updateSecondsLeftForTimer } from 'src/utils/timer.utils';
 import { timeFormatIsValid, timeInputMatchesFormat } from 'src/utils/validators';
 
 export const embeddedTimerElement = (el: HTMLElement, component: Timer, timer: TimerModel) => {
@@ -18,8 +18,10 @@ export const embeddedTimerElement = (el: HTMLElement, component: Timer, timer: T
 
     const timerContainer = el.createDiv("embedded-timer-wrapper").createDiv("timer-container");
 
-    const timeElement = timerContainer.createSpan("time");
+    const timeElement = timerContainer.createEl("h5", "time");
     timeElement.setText(getTimerString(timer.secondsLeft, timer.formatString));
+
+    timeElement.setCssStyles({width: `${timer.formatString.length * 10}px`})
     
     let runTimer = -99;
 
@@ -30,15 +32,21 @@ export const embeddedTimerElement = (el: HTMLElement, component: Timer, timer: T
 
     const resetButton = timeControls.createEl("button", "timer-btn reset-btn");
     setIcon(resetButton, "rotate-ccw");
+    resetButton.disabled = true;
+
+    const stopTimer = () => {
+        setIcon(playPauseButton, "play");
+        window.clearInterval(runTimer);
+        runTimer = -99;
+        timer.lastUpdated = undefined;
+    }
 
     const toggleTimer = () => {
         if (runTimer !== -99) {
-            setIcon(playPauseButton, "play");
-            window.clearInterval(runTimer);
-            runTimer = -99;
-            timer.lastUpdated = undefined;
+            stopTimer();
         }
         else {
+            resetButton.disabled = false;
             setIcon(playPauseButton, "pause");
             runTimer = window.setInterval(() => updateSecondsLeftForTimer(timer, timeElement), 500);
             component.registerInterval(runTimer);
@@ -47,5 +55,11 @@ export const embeddedTimerElement = (el: HTMLElement, component: Timer, timer: T
     }
 
     playPauseButton.onClickEvent(toggleTimer);
+    resetButton.onClickEvent(() => {
+        stopTimer();
+        resetButton.disabled = true;
+        timer.secondsLeft = getSecondsForTimer(timer.timeString, timer.formatString);
+        timeElement.setText(getTimerString(timer.secondsLeft, timer.formatString));
+    })
 
 }

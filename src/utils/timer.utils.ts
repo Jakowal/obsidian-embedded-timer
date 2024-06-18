@@ -56,7 +56,7 @@ export const getTimerString = (secondsLeft: number, formatString: string): strin
         .replace(TimeFormatRegex.seconds, secondsString);
 }
 
-const getSecondsForTimer = (timeString: string, formatString: string): number => {
+export const getSecondsForTimer = (timeString: string, formatString: string): number => {
     const hoursIndex = TimeFormatRegex.hours.exec(formatString)?.index;
     const minutesIndex = TimeFormatRegex.minutes.exec(formatString)?.index;
     const secondsIndex = TimeFormatRegex.seconds.exec(formatString)?.index;
