@@ -13,10 +13,6 @@ export default class Timer extends Plugin {
 		await this.loadSettings();
 		this.runningTimers = [];
 
-		// TODO: This adds a status bar item to the bottom of the app. Does not work on mobile apps.
-		// const statusBarItemEl = this.addStatusBarItem();
-		// statusBarItemEl.setText('Status Bar Text');
-
 		// This adds a complex command that can check whether the current state of the app allows execution of the command
 		this.addCommand({
 			id: 'insert-timer',
@@ -32,9 +28,9 @@ export default class Timer extends Plugin {
 		// This adds a settings tab so the user can configure various aspects of the plugin
 		this.addSettingTab(new TimerSettingTab(this.app, this));
 
-		this.registerMarkdownCodeBlockProcessor("timer", (source, el) => {
+		this.registerMarkdownCodeBlockProcessor("timer", (source, el, context) => {
 			const timer = createTimerObject(source.split("\n"), this);
-			embeddedTimerElement(el, this, timer);
+			embeddedTimerElement(el, this, timer, context.sourcePath);
 		})
 	}
 

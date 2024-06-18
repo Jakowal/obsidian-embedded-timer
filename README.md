@@ -21,7 +21,9 @@ It is also possible to override the time format on a per-timer basis. Simply add
 The timers use default variables for most of the styling and should be compatible with most themes.
 
 ## Limitations
-As of V1.0.0, the timers do not persist between closing notes or reloading the timer by editing the markdown code block.
+- As of V1.0.0, the timers do not persist between closing notes or reloading the timer by editing the markdown code block.
+- Reloading the timer through opening the code block will keep the timer running in the background.
+- Currently, there is no sound notification when a timer completes.
 
 ## License
 The plugin is licensed under the [MIT License](https://mit-license.org/).

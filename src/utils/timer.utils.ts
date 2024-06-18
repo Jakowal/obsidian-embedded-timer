@@ -2,10 +2,11 @@ import Timer from "main";
 import { TimerModel } from "src/models/timer.model";
 import { TimeFormatRegex } from "./validators";
 import { Notice } from "obsidian";
+import { TimerCompletedModal } from "src/components/TimerFinishedModal";
 
 export const timerIsFinished = (timer: TimerModel): boolean => timer.secondsLeft === 0;
 
-export const updateSecondsLeftForTimer = (timer: TimerModel, timerTextSpan: HTMLSpanElement) => {
+export const updateSecondsLeftForTimer = (timer: TimerModel, timerTextSpan: HTMLSpanElement, runTimer: number, onComplete: () => void) => {
     if (!timerIsFinished(timer)) {
         if (timer.lastUpdated) {
             const now = Math.ceil(new Date().getTime() / 1000);
@@ -18,7 +19,10 @@ export const updateSecondsLeftForTimer = (timer: TimerModel, timerTextSpan: HTML
         }
     }
     else {
-        new Notice("Timer finished!!");
+        timer.lastUpdated = undefined;
+        window.clearInterval(runTimer);
+        onComplete();
+
     }
 }
 

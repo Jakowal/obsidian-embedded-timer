@@ -1,10 +1,11 @@
 import Timer from 'main';
-import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting, setIcon } from 'obsidian';
+import { App, Editor, MarkdownPostProcessorContext, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting, setIcon } from 'obsidian';
 import { TimerModel } from 'src/models/timer.model';
 import { getSecondsForTimer, getTimerString, timerIsFinished, updateSecondsLeftForTimer } from 'src/utils/timer.utils';
 import { timeFormatIsValid, timeInputMatchesFormat } from 'src/utils/validators';
+import { TimerCompletedModal } from './TimerFinishedModal';
 
-export const embeddedTimerElement = (el: HTMLElement, component: Timer, timer: TimerModel) => {
+export const embeddedTimerElement = (el: HTMLElement, component: Timer, timer: TimerModel, timerFile: string) => {
 
     if (!timeFormatIsValid(timer.formatString)) {
         new Notice("Invalid time format...", 2000);
@@ -41,6 +42,15 @@ export const embeddedTimerElement = (el: HTMLElement, component: Timer, timer: T
         timer.lastUpdated = undefined;
     }
 
+    const onFinishTimer = () => {
+        if (component.settings.showModalOnComplete) {
+            new TimerCompletedModal(component.app, timerFile).open();
+        }
+        else {
+            new Notice("A timer has completed!!");
+        }
+    }
+
     const toggleTimer = () => {
         if (runTimer !== -99) {
             stopTimer();
@@ -48,7 +58,7 @@ export const embeddedTimerElement = (el: HTMLElement, component: Timer, timer: T
         else {
             resetButton.disabled = false;
             setIcon(playPauseButton, "pause");
-            runTimer = window.setInterval(() => updateSecondsLeftForTimer(timer, timeElement), 500);
+            runTimer = window.setInterval(() => updateSecondsLeftForTimer(timer, timeElement, runTimer, onFinishTimer), 500);
             component.registerInterval(runTimer);
             timer.lastUpdated = new Date();
         }

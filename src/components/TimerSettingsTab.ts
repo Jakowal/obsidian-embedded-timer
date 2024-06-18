@@ -5,12 +5,14 @@ export interface TimerSettings {
 	timeFormat: string;
 	muteAlert: boolean;
 	showInStatusBar: boolean;
+	showModalOnComplete: boolean;
 }
 
 export const DEFAULT_SETTINGS: TimerSettings = {
 	timeFormat: 'HH:mm:ss',
 	muteAlert: false,
 	showInStatusBar: true,
+	showModalOnComplete: true,
 }
 
 export class TimerSettingTab extends PluginSettingTab {
@@ -37,13 +39,23 @@ export class TimerSettingTab extends PluginSettingTab {
 					await this.plugin.saveSettings();
 				}));
 
+		// new Setting(containerEl)
+		// 	.setName('Mute')
+		// 	.setDesc('Mutes the notification sound for a finished timer.')
+		// 	.addToggle(toggle => toggle
+		// 		.setValue(this.plugin.settings.muteAlert)
+		// 		.onChange(async (value) => {
+		// 			this.plugin.settings.muteAlert = value;
+		// 			await this.plugin.saveSettings();
+		// 		}));
+
 		new Setting(containerEl)
-			.setName('Mute')
-			.setDesc('Mutes the notification sound for a finished timer.')
+			.setName('Popup on compeltion')
+			.setDesc('Shows a modal whenever a timer completes.')
 			.addToggle(toggle => toggle
-				.setValue(this.plugin.settings.muteAlert)
+				.setValue(this.plugin.settings.showModalOnComplete)
 				.onChange(async (value) => {
-					this.plugin.settings.muteAlert = value;
+					this.plugin.settings.showModalOnComplete = value;
 					await this.plugin.saveSettings();
 				}));
 	}
